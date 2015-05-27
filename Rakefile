@@ -17,8 +17,8 @@ Jeweler::Tasks.new do |gem|
   gem.name = "active-record-streamer"
   gem.homepage = "http://github.com/kaspernj/active-record-streamer"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.summary = %Q{Stream ActiveRecord results}
+  gem.description = %Q{Stream ActiveRecord results}
   gem.email = "k@spernj.org"
   gem.authors = ["kaspernj"]
   # dependencies defined in Gemfile
