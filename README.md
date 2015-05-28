@@ -1,6 +1,30 @@
 # ActiveRecordStreamer
 
-Stream ActiveRecord results.
+Stream ActiveRecord results in a new database connection using an unbuffered query.
+
+Great for huge queries with ordered results, where `find_each` is not an option.
+
+ActiveRecordStreamer works through a single huge unbuffered query. For each 1000 models it preloads any includes and yields them back. It then loads another 1000 over and over until all rows has been read.
+
+## Install
+
+Add to your Gemfile and bundle:
+
+```ruby
+gem 'active_record_streamer'
+```
+
+## Usage
+
+Use a normal query, pass it through ActiveRecordStreamer and loop over the results with `each`:
+
+```ruby
+users = User.where(something: 'something').includes(group: :users)
+
+ActiveRecordStreamer.new(query: users).each |user|
+  puts "User: #{user.inspect}"
+end
+```
 
 ## Contributing to active-record-streamer
 
