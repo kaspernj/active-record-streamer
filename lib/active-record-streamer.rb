@@ -50,7 +50,11 @@ class ActiveRecordStreamer
 private
 
   def yield_cache(cache)
-    ActiveRecord::Associations::Preloader.new.preload(cache, @includes)
+    if rails4?
+      ActiveRecord::Associations::Preloader.new.preload(cache, @includes)
+    else
+      ActiveRecord::Associations::Preloader.new(cache, @includes).run
+    end
 
     cache.each do |model|
       yield model
