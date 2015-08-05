@@ -16,9 +16,9 @@ GEM
       tzinfo (~> 1.1)
     addressable (2.3.8)
     arel (6.0.0)
-    array_enumerator (0.0.7)
-    baza (0.0.17)
-      array_enumerator (~> 0.0.7)
+    array_enumerator (0.0.10)
+    baza (0.0.19)
+      array_enumerator (~> 0.0.10)
       datet (~> 0.0.25)
       event_handler (~> 0.0.0)
       string-cases (~> 0.0.1)
@@ -104,7 +104,7 @@ PLATFORMS
 
 DEPENDENCIES
   activerecord (= 4.2.1)
-  baza (~> 0.0.17)
+  baza (>= 0.0.19)
   bundler (~> 1.0)
   jeweler (~> 2.0.1)
   mysql2 (= 0.3.18)
@@ -112,3 +112,6 @@ DEPENDENCIES
   rdoc (~> 3.12)
   rspec (~> 2.8.0)
   simplecov
+
+BUNDLED WITH
+   1.10.5
