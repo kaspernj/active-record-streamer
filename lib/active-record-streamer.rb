@@ -1,6 +1,8 @@
 require 'baza'
 
 class ActiveRecordStreamer
+  IS_RAILS_4 = Rails::VERSION::STRING.start_with?('4')
+
   def initialize(args = {})
     @args = args
     @klass = args[:query].klass
@@ -9,15 +11,25 @@ class ActiveRecordStreamer
   end
 
   def each(&blk)
-    @baza_db = Baza::Cloner.from_active_record_connection(@klass.connection)
+    if @klass.respond_to?(:connection_without_octopus)
+      @baza_db = Baza::Cloner.from_active_record_connection(@klass.connection_without_octopus)
+    else
+      @baza_db = Baza::Cloner.from_active_record_connection(@klass.connection)
+    end
 
     begin
       cache = []
 
       @baza_db.query_ubuf(@sql) do |data|
         model = @klass.new
-        model.instance_variable_set(:@new_record, false)
-        model.instance_variable_set(:@attributes, data.stringify_keys!)
+
+        if IS_RAILS_4
+          model.assign_attributes(data)
+          model.instance_variable_set(:@new_record, false)
+        else
+          model.instance_variable_set(:@new_record, false)
+          model.instance_variable_set(:@attributes, data.stringify_keys!)
+        end
 
         cache << model
 
@@ -36,7 +48,7 @@ class ActiveRecordStreamer
 private
 
   def yield_cache(cache)
-    ActiveRecord::Associations::Preloader.new(cache, @includes).run
+    ActiveRecord::Associations::Preloader.new.preload(cache, @includes)
 
     cache.each do |model|
       yield model
