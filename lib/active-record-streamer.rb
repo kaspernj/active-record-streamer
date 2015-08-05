@@ -1,13 +1,15 @@
 require 'baza'
 
 class ActiveRecordStreamer
-  IS_RAILS_4 = Rails::VERSION::STRING.start_with?('4')
-
   def initialize(args = {})
     @args = args
     @klass = args[:query].klass
     @sql = @args[:query].to_sql
     @includes = @args[:query].includes_values
+  end
+
+  def rails4?
+    @@rails4 ||= ActiveRecord::VERSION::STRING.start_with?('4')
   end
 
   def each(&blk)
@@ -23,7 +25,7 @@ class ActiveRecordStreamer
       @baza_db.query_ubuf(@sql) do |data|
         model = @klass.new
 
-        if IS_RAILS_4
+        if rails4?
           model.assign_attributes(data)
           model.instance_variable_set(:@new_record, false)
         else
