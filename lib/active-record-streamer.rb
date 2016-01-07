@@ -1,6 +1,8 @@
-require 'baza'
+require "baza"
 
 class ActiveRecordStreamer
+  RAILS_4 = ActiveRecord::VERSION::STRING.start_with?("4")
+
   def initialize(args = {})
     @args = args
     @klass = args[:query].klass
@@ -9,7 +11,7 @@ class ActiveRecordStreamer
   end
 
   def rails4?
-    @@rails4 ||= ActiveRecord::VERSION::STRING.start_with?('4')
+    RAILS_4
   end
 
   def each(&blk)
@@ -43,7 +45,7 @@ class ActiveRecordStreamer
 
       yield_cache(cache, &blk) if cache.any?
     ensure
-      @baza_db.destroy
+      @baza_db.close
     end
   end
 

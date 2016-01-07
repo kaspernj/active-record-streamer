@@ -1,4 +1,5 @@
-require 'simplecov'
+require "simplecov"
+require "active_record"
 
 module SimpleCov::Configuration
   def clean_filters
@@ -8,22 +9,21 @@ end
 
 SimpleCov.configure do
   clean_filters
-  load_adapter 'test_frameworks'
+  load_adapter "test_frameworks"
 end
 
 ENV["COVERAGE"] && SimpleCov.start do
   add_filter "/.rvm/"
 end
-$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
+$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), "..", "lib"))
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 
-require 'rspec'
-require 'active-record-streamer'
+require "rspec"
+require "active-record-streamer"
 
 # Requires supporting files with custom matchers and macros, etc,
 # in ./support/ and its subdirectories.
-Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each {|f| require f}
+Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
 
 RSpec.configure do |config|
-
 end
